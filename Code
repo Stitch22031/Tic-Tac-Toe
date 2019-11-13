@@ -1,0 +1,141 @@
+#include <iostream>
+#include <stdlib.h>
+#include <time.h>
+
+using namespace std;
+
+char field[10];
+
+void clearconsole() {
+	system("cls");
+}
+
+char keyinput(bool x) {
+	while (true) {
+		cout << "\n\nInput: ";
+		char input = ' ';
+		cin >> input;
+		int inputNumber = input - '0';
+		if(inputNumber > 9 || inputNumber < 1) {
+			if (input == 'q') {
+				return input;
+			}
+			else
+				cout << "\nInvalid Input! (Trottel)\n\n";
+			}
+			else if(field[inputNumber] != ' ') {
+				cout << "\nAlready used (Trottel)\n\n";
+			}
+			else {
+				if (x)
+					field[inputNumber] = 'X';
+				else
+					field[inputNumber] = 'O';
+				return input;
+			}
+		}
+	}
+
+
+bool checkWin(char sign) {
+	if (field[1] == sign && field[2] == sign && field[3] == sign || field[4] == sign && field[5] == sign && field[6] == sign || field[7] == sign && field[8] == sign && field[9] == sign || field[1] == sign && field[4] == sign && field[7] == sign || field[2] == sign && field[5] == sign && field[8] == sign || field[3] == sign && field[6] == sign && field[9] == sign || field[1] == sign && field[5] == sign && field[9] == sign || field[3] == sign && field[5] == sign && field[9] == sign)
+	{
+		return true;
+	}
+	return false;
+}	
+
+bool checkfull() {
+	for (int i = 1; i <= 9; i++) {
+		if (field[i] == ' ') {
+			return false;
+		}
+	}
+	return true;
+}
+
+void resteField() {
+	for(int i=0; i<10; i++)
+	{
+		field[i] = ' ';
+	}
+}
+
+void drawField() {
+	clearconsole();
+	cout << "\n\n\n"
+		<< "     " << field[1] << " | " << field[2] << " | " << field[3] << endl
+		<< "    ...|...|..." << endl
+		<< "     " << field[4] << " | " << field[5] << " | " << field[6] << endl
+		<< "    ...|...|..." << endl
+		<< "     " << field[7] << " | " << field[8] << " | " << field[9] << endl;
+}
+
+void singelplayer() {
+
+}
+
+void multiplayer() {
+	char input = ' ';
+	bool Player1Turn = true;
+	while (true) {
+		drawField();
+		if (checkWin('X')) {
+			cout << "\nPlayer 1 wins!!!\n\n";
+			return;
+		}
+		else if (checkWin('O')) {
+			cout << "\nPlayer 2 wins!!!\n\n";
+			return;
+		}
+		if (checkfull()) {
+			cout << "\nTie! \n\n";
+			return;
+		}
+		input = keyinput(Player1Turn);
+		if (input == 'q') {
+			return;
+		}
+		Player1Turn = !Player1Turn;
+	}
+}
+
+void help() {
+	clearconsole();
+	cout << "\nSingelplayer: Play alone vs. forgot it. \nMultiplayer: Play against your friend or BAKA. \nQuit: Leave the game.";
+	return;
+}
+
+
+
+void menu() {
+	while (true) {
+		resteField();
+		char inputmenu;
+		cout << "\n\n"
+			<< "MENU\n\n"
+			<< "1: Singelplayer\n"
+			<< "2: Multiplayer\n"
+			<< "3: Help\n"
+			<< "4: Quit\n\n\n"
+			<< "Input: ";
+		cin >> inputmenu;
+
+		if (inputmenu == '1')singelplayer();
+		else if (inputmenu == '2')multiplayer();
+		else if (inputmenu == '3')help();
+		else if (inputmenu == '4' || 'q')return;
+		else {
+			clearconsole(); 
+			cout << "\nInvalid Input!";}
+	}
+}
+
+
+
+
+
+int main() {
+	menu();
+	return 0;
+}
